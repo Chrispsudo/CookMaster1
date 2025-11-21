@@ -13,6 +13,11 @@ namespace CookMaster1.Views
         public MainWindow()
         {
             InitializeComponent(); // Loads the XAML layout and applies DataContext
+
+            // Set the DataContext here in code-behind instead of XAML.
+            // This avoids design-time errors when the ViewModel needs services or types
+            // that the XAML designer cannot instantiate.
+            this.DataContext = new CookMaster1.ViewModels.MainWindowVM();
         }
 
         /// <summary>
@@ -31,3 +36,4 @@ namespace CookMaster1.Views
         }
     }
 }
+

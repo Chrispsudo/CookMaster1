@@ -1,7 +1,11 @@
-﻿namespace CookMaster1.ViewModels
+﻿using CookMaster1.Services;
+
+namespace CookMaster1.ViewModels
 {
     public class MainWindowVM : BaseViewModel
     {
+        private readonly IWindowService _windowService;
+
         private readonly UserManager _userManager;
 
         // Binding for username written in the textbox
@@ -18,17 +22,24 @@
 
         public RelayCommand OpenRegisterCommand { get; }
 
-        public MainWindowWM()
+        // Provide a parameterless constructor for XAML, forward to main ctor with default services.
+        public MainWindowVM() : this(new WindowService(), new UserManager()) { }
+
+        // Constructor used in unit tests where you can inject mocks.
+        public MainWindowVM(IWindowService windowService, UserManager userManager)
         {
-            _userManager = new UserManager();
-
-            // Connect buttons in XAML to methods
-
+            _windowService = windowService;
+            _userManager = userManager;
             LoginCommand = new RelayCommand(Login);
-
             OpenRegisterCommand = new RelayCommand(OpenRegister);
-
         }
+
+        private void OpenRegister()
+        {
+            // Now calls service instead of creating a view directly.
+            _windowService.ShowRegistrationWindow();
+        }
+
 
         private void Login()
         {
@@ -44,12 +55,6 @@
             }
         }
 
-        private void OpenRegister()
-        {
-            // Logic to open the registration window
-            RegistrationWindow regWindow = new RegistrationWindow();
-            regWindow.Show();
-        }
 
 
 
