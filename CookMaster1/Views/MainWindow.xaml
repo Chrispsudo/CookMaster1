@@ -1,0 +1,62 @@
+﻿<Window x:Class="CookMaster1.Views.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="clr-namespace:CookMaster1.ViewModels"
+        Title="CookMaster1 - Login" Height="300" Width="400">
+
+    <!-- 
+        The DataContext tells WPF which ViewModel this View should use.
+        We create an instance of MainWindowVM and assign it as the DataContext,
+        so all bindings inside this Window refer to that ViewModel.
+    -->
+    <Window.DataContext>
+        <vm:MainWindowVM />
+    </Window.DataContext>
+
+    <Grid Margin="20">
+        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Width="300" Spacing="8">
+
+            <!-- Label shown above username input -->
+            <TextBlock Text="Username" FontWeight="Bold"/>
+
+            <!-- 
+                Bind TextBox text to the 'Username' property in the ViewModel.
+                UpdateSourceTrigger=PropertyChanged updates the VM on every keystroke.
+            -->
+            <TextBox
+                Text="{Binding Username, UpdateSourceTrigger=PropertyChanged}"
+                Height="28"
+                />
+
+            <!-- Password label -->
+            <TextBlock Text="Password" FontWeight="Bold" Margin="0,8,0,0"/>
+
+            <!-- 
+                PasswordBox cannot bind directly to a string property in MVVM.
+                We use a PasswordChanged event in code-behind to send the password into the ViewModel.
+            -->
+            <PasswordBox x:Name="PwBox"
+                         PasswordChanged="PwBox_PasswordChanged"
+                         Height="28" />
+
+            <!-- 
+                Button bound to the LoginCommand in the ViewModel.
+                When clicked, ViewModel.LoginCommand.Execute() is run.
+            -->
+            <Button Content="Login"
+                    Command="{Binding LoginCommand}"
+                    Margin="0,12,0,0"
+                    Height="32" />
+
+            <!-- 
+                Button to open the registration window.
+                Bound to the OpenRegisterCommand in the ViewModel.
+            -->
+            <Button Content="Register"
+                    Command="{Binding OpenRegisterCommand}"
+                    Height="32" />
+
+        </StackPanel>
+    </Grid>
+</Window>
+
